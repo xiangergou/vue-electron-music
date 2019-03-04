@@ -2,11 +2,10 @@
  * @Author: liuxia
  * @Date: 2019-03-04 11:14:55
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-04 11:51:43
+ * @Last Modified time: 2019-03-04 14:36:45
  */
 <template>
   <div class="app-wrapper">
-    <background></background>
     <header>
       header
     </header>
@@ -23,10 +22,10 @@
 </template>
 
 <script>
-import background from '@/components/background.vue'
+require('@/utils/background.js')
+
 export default {
   components: {
-    background
   }
 }
 </script>
