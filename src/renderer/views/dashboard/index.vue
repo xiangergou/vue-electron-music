@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 16:28:16
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-04 17:45:17
+ * @Last Modified time: 2019-03-04 21:47:31
  */
 <template>
   <div class="dashboard-head__nav">
@@ -31,6 +31,15 @@ export default {
       }, {
         label: '排行榜',
         name: 'ranking'
+      }, {
+        label: '歌单',
+        name: 'playlist'
+      }, {
+        label: '主播电台',
+        name: 'hostStation'
+      }, {
+        label: '最新音乐',
+        name: 'latestMusic'
       }]
     }
   },

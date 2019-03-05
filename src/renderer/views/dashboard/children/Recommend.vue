@@ -46,6 +46,8 @@ export default {
 
 <style lang="scss">
 .recommend__wrapper{
+  padding: 0 30px;
+  box-sizing: border-box;
   max-width: 1150px;
   margin: 0 auto;
   .el-carousel__item h3 {
