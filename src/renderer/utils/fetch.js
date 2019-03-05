@@ -2,11 +2,12 @@
  * @Author: liuxia
  * @Date: 2019-03-04 21:20:31
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-05 14:02:32
+ * @Last Modified time: 2019-03-05 19:11:26
  */
 
 import axios from 'axios'
 import { Message } from 'element-ui'
+// import store from '../store';
 // import store from '../store'
 // import { getToken } from '@/utils/auth'
 
@@ -26,9 +27,9 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
-  // Do something before request is sent
-  // if (store.getters.token) {
-  //   config.headers['X-Token'] = getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
+  config.headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
+  // if (config.params) {
+  //   config.params = Object.assign(config.params, defaultConfig)
   // }
   return config
 }, error => {

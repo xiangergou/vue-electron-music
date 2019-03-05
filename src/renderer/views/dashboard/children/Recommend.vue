@@ -55,6 +55,8 @@ export default {
   },
   mounted () {
     this.getBanners()
+    this.$store.dispatch('getNewCourier', { type: 0 }).then(res => {
+    })
   }
 }
 </script>
