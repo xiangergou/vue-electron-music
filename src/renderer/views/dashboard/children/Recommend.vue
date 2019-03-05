@@ -1,9 +1,9 @@
 <template>
   <div class="recommend__wrapper">
     <header>
-      <el-carousel :interval="4000" type="card" height="200px">
-        <el-carousel-item v-for="item in 6" :key="item">
-          <h3>{{ item }}</h3>
+      <el-carousel :interval="8000" type="card" height="175px">
+        <el-carousel-item v-for="(item, i) in banners" :key="i">
+          <img :src="item.imageUrl" alt="">
         </el-carousel-item>
       </el-carousel>
     </header>
@@ -40,7 +40,22 @@
 
 <script>
 export default {
-  name: 'recommend'
+  name: 'recommend',
+  data () {
+    return {
+      banners: []
+    }
+  },
+  methods: {
+    getBanners () {
+      this.$store.dispatch('getBanner').then(() => {
+        this.banners = this.$store.state.Dashboard.bannerImgList
+      })
+    }
+  },
+  mounted () {
+    this.getBanners()
+  }
 }
 </script>
 
@@ -50,14 +65,10 @@ export default {
   box-sizing: border-box;
   max-width: 1150px;
   margin: 0 auto;
-  .el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 200px;
-    margin: 0;
+  .el-carousel__item img {
+    width: 100%;
+    height: 100%;;
   }
-  
   .el-carousel__item:nth-child(2n) {
     background-color: #99a9bf;
   }

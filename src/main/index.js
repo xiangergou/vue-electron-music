@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== 'development') {
 
 let mainWindow
 const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:9080`
+  ? `http://localhost:9527`
   : `file://${__dirname}/index.html`
 
 function createWindow () {
@@ -27,8 +27,7 @@ function createWindow () {
     minHeight: 670,
     minimizable: true,
     title: 'yun music',
-    devTools: true,
-    titleBarStyle: 'hidden'
+    devTools: true
     // skipTaskbar:  true
   })
 
