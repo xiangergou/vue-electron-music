@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 11:14:55
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-04 21:49:43
+ * @Last Modified time: 2019-03-06 20:23:15
  */
 <template>
   <div class="app-wrapper">
@@ -62,7 +62,7 @@ export default {
       // background-color: #E9EEF3;
       color: #333;
       text-align: center;
-      line-height: 160px;
+      // line-height: 160px;
       padding: 0;
     }
     

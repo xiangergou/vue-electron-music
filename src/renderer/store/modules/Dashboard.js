@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-05 14:43:08
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-05 18:57:37
+ * @Last Modified time: 2019-03-06 22:09:24
  */
 
 import { homeApi } from '@/api/dashboard'
@@ -36,7 +36,6 @@ const actions = {
   },
 
   /**
-   *
    * @param {*} { commit, state }
    * @returns 新歌速递
    */
@@ -48,6 +47,21 @@ const actions = {
         // commit('SET_ROLES', data.isAdmin)
         // commit('SET_NAME', data.name)
         // commit('SET_AVATAR', data.picUrl || defaultAvatar)
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  /**
+   * @param {*} { commit, state }
+   * @returns 推荐歌单
+   */
+  getPlayList ({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      homeApi.getPlayList().then(response => {
+        const data = response.data
         resolve(data)
       }).catch(error => {
         reject(error)

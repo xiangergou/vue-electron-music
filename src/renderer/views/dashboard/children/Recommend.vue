@@ -12,7 +12,9 @@
       <h2>热门精选</h2>
       <div class="select-list">
         <ul>
-          <li></li>
+            <li v-for="(item, i) in personalized" :key="i">
+            {{item.name}}
+          </li>
         </ul>
       </div>
     </article>
@@ -21,7 +23,7 @@
       <h2>个性化推荐</h2>
       <div class="select-list">
         <ul>
-          <li></li>
+        
         </ul>
       </div>
     </article>
@@ -29,9 +31,16 @@
     <article class="recommend__select">
       <h2>新歌速递</h2>
       <div class="select-list">
-        <ul>
-          <li></li>
-        </ul>
+        <el-row>
+          <el-col :span="12" v-for="(item, i) in musicList" :key="i" class="musicItem">
+            {{i+1}} &nbsp; {{item.name}}
+          </el-col>
+        </el-row>
+        <!-- <ol>
+          <li v-for="(item, i) in musicList" :key="i">
+            {{item.name}}
+          </li>
+        </ol> -->
       </div>
     </article>
 
@@ -43,7 +52,9 @@ export default {
   name: 'recommend',
   data () {
     return {
-      banners: []
+      banners: [],
+      musicList: [],
+      personalized: []
     }
   },
   methods: {
@@ -56,6 +67,10 @@ export default {
   mounted () {
     this.getBanners()
     this.$store.dispatch('getNewCourier', { type: 0 }).then(res => {
+      this.musicList = res.data
+    })
+    this.$store.dispatch('getPlayList').then(res => {
+      this.personalized = res.result
     })
   }
 }
@@ -77,6 +92,38 @@ export default {
   
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
+  }
+  .recommend__select{
+    width: 100%;
+    height: 330px;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    ol{
+      width: 100%;
+      padding: 0;
+      li{
+        display: inline-block;
+        width: 50%;
+        margin: 0;
+        padding: 0;
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+        box-sizing: border-box;
+      }
+    }
+    .musicItem{
+      height: 20px;
+      line-height: 20px;
+      text-align: left;
+      font-size: 13px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 }
  
