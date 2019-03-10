@@ -23,7 +23,7 @@
       <h2>个性化推荐</h2>
       <div class="select-list">
         <ul>
-        
+          <li v-for="(item, index) in resource" :key="index">{{item.name}}</li>
         </ul>
       </div>
     </article>
@@ -54,7 +54,8 @@ export default {
     return {
       banners: [],
       musicList: [],
-      personalized: []
+      personalized: [],
+      resource: [] // 个人推荐
     }
   },
   methods: {
@@ -69,12 +70,16 @@ export default {
     // this.$store.dispatch('getUserSongList').then(res => {
     //   console.log(res, 'res')
     // })
-    // this.$store.dispatch('getNewCourier', { type: 0 }).then(res => {
-    //   this.musicList = res.data
-    // })
-    // this.$store.dispatch('getPlayList').then(res => {
-    //   this.personalized = res.result
-    // })
+    this.$store.dispatch('getNewCourier', { type: 0 }).then(res => {
+      this.musicList = res.data
+    })
+    this.$store.dispatch('getPlayList').then(res => {
+      this.personalized = res.result
+    })
+    this.$store.dispatch('getResource').then(res => {
+      console.log(res)
+      this.resource = res.recommend
+    })
   }
 }
 </script>

@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 15:26:51
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-10 11:41:18
+ * @Last Modified time: 2019-03-10 22:46:08
  */
 
 <template>
@@ -66,8 +66,8 @@ export default {
   methods: {
     logout () {
       this.$store.dispatch('LogOut').then(() => {
-        this.$router.push({ path: '/login' })
-        // location.reload() // 为了重新实例化vue-router对象 避免bug
+        // this.$router.push({ path: '/login' })
+        location.reload() // 为了重新实例化vue-router对象 避免bug
       })
     }
   }

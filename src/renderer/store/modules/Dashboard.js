@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-05 14:43:08
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-06 22:09:24
+ * @Last Modified time: 2019-03-10 22:54:41
  */
 
 import { homeApi } from '@/api/dashboard'
@@ -61,6 +61,17 @@ const actions = {
   getPlayList ({ commit, state }) {
     return new Promise((resolve, reject) => {
       homeApi.getPlayList().then(response => {
+        const data = response.data
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  getResource ({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      homeApi.getResource().then(response => {
         const data = response.data
         resolve(data)
       }).catch(error => {

@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 11:14:55
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-09 17:16:30
+ * @Last Modified time: 2019-03-10 22:17:03
  */
 <template>
   <div class="app-wrapper">
@@ -18,7 +18,9 @@
           <app-main />
         </el-main>
       </el-container>
-      <el-footer>Footer</el-footer>
+      <el-footer>
+        <app-footer></app-footer>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -26,6 +28,7 @@
 import navhead from './components/Head'
 import appMain from './components/Main'
 import sidebar from './components/Sidebar'
+import appFooter from './components/Footer'
 
 require('@/utils/background.js')
 
@@ -33,7 +36,8 @@ export default {
   components: {
     navhead,
     appMain,
-    sidebar
+    sidebar,
+    appFooter
   }
 }
 </script>
