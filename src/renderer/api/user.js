@@ -2,13 +2,12 @@
  * @Author: liuxia
  * @Date: 2019-03-04 21:23:49
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-09 22:07:46
+ * @Last Modified time: 2019-03-10 10:51:48
  */
 
 import fetch from '@/utils/fetch'
 
 export const loginApi = {
-  /* 登录获取sessionId */
   login (params = {}) {
     return fetch({
       url: '/login/cellphone',
@@ -16,7 +15,6 @@ export const loginApi = {
       params
     })
   },
-
   getInfo (params = {}) {
     return fetch({
       url: '/user/getInfo',
@@ -25,11 +23,10 @@ export const loginApi = {
     })
   },
   /* 退出系统 */
-  logout (params = {}) {
+  logout () {
     return fetch({
-      url: '/user/logout',
-      method: 'post',
-      params
+      url: '/logout',
+      method: 'post'
     })
   },
   /* 获取用户信息 , 歌单，收藏，mv, dj 数量 */

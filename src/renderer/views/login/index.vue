@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-09 20:35:59
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-09 22:25:24
+ * @Last Modified time: 2019-03-10 11:41:54
  */
 
 <template>
@@ -101,9 +101,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(res => {
-            console.log(document.cookie)
-            // this.loading = false
-            console.log(res)
+            this.loading = false
             this.$router.push({ path: '/' })
           }).catch(() => {
             this.loading = false

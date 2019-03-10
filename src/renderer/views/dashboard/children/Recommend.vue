@@ -66,9 +66,9 @@ export default {
   },
   mounted () {
     this.getBanners()
-    this.$store.dispatch('getUserSongList', +new Date()).then(res => {
-      console.log(res, 'res')
-    })
+    // this.$store.dispatch('getUserSongList').then(res => {
+    //   console.log(res, 'res')
+    // })
     // this.$store.dispatch('getNewCourier', { type: 0 }).then(res => {
     //   this.musicList = res.data
     // })

@@ -2,19 +2,18 @@
  * @Author: liuxia
  * @Date: 2019-01-12 19:09:26
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-09 22:35:39
+ * @Last Modified time: 2019-03-10 11:34:06
  */
 
 import { loginApi } from '@/api/user'
-// import { getSessionId, setSessionId, removeSessionId } from '@/utils/auth'
+import { getSessionId, setSessionId, removeSessionId } from '@/utils/auth'
 // import defaultAvatar from '@/assets/defaultAvatar.png'
 
 const user = {
   state: {
-    // sessionId: getSessionId(),
+    sessionId: getSessionId(),
     name: '',
-    avatar: '',
-    roles: []
+    avatar: ''
   },
   mutations: {
     SET_SESSIONID: (state, sessionId) => {
@@ -25,14 +24,6 @@ const user = {
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
-    },
-    SET_ROLES: (state, roles) => {
-      const rolesMap = {
-        '1': 'admin',
-        '99': 'service',
-        '0': 'global'
-      }
-      state.roles = rolesMap[roles.toString()] || 'global'
     }
   },
   actions: {
@@ -41,12 +32,11 @@ const user = {
       return new Promise((resolve, reject) => {
         loginApi.login({
           phone: mobile,
-          password: userInfo.password,
-          xhrFields: { withCredentials: true }
+          password: userInfo.password
         }).then(response => {
-          const data = response.data.data
-          // setSessionId(data.sessionId)
-          // commit('SET_SESSIONID', data.sessionId)
+          const data = response.data
+          setSessionId(data.account.id)
+          commit('SET_SESSIONID', data.account.id)
           resolve(data)
         }).catch(error => {
           reject(error)
@@ -71,31 +61,22 @@ const user = {
       })
     },
 
-    // 登出
-    LogOut ({ commit, state }) {
+    getUserSongList ({ commit, state }) {
       return new Promise((resolve, reject) => {
-        loginApi.logout({
-          sessionId: state.sessionId
-        }).then(() => {
-          // removeSessionId()
-          commit('SET_SESSIONID', '')
-          commit('SET_ROLES', [])
-          resolve()
+        loginApi.getUserSongList({
+        }).then(res => {
+          resolve(res)
         }).catch(error => {
           reject(error)
         })
       })
     },
 
-    getUserSongList ({ commit, state }) {
+    LogOut () {
       return new Promise((resolve, reject) => {
-        loginApi.getUserSongList({
-          xhrFields: { withCredentials: true }
-          // sessionId: state.sessionId
+        loginApi.logout({
         }).then(res => {
-          // removeSessionId()
-          commit('SET_SESSIONID', '')
-          commit('SET_ROLES', [])
+          removeSessionId()
           resolve(res)
         }).catch(error => {
           reject(error)

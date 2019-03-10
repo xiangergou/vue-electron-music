@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 21:20:31
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-10 10:39:14
+ * @Last Modified time: 2019-03-10 11:07:30
  */
 
 import axios from 'axios'
@@ -35,7 +35,6 @@ service.interceptors.request.use(config => {
   return config
 }, error => {
   // Do something with request error
-  console.log(error) // for debug
   Promise.reject(error)
 })
 
@@ -45,7 +44,12 @@ service.interceptors.response.use(
     return response
   },
   error => {
-    if (error.message === '取消重复请求') {
+    if (error.response.data.code === 301) {
+      Message({
+        message: '未登录',
+        type: 'error',
+        duration: 301
+      })
       return Promise.reject(error)
     }
     Message({
