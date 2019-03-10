@@ -66,12 +66,15 @@ export default {
   },
   mounted () {
     this.getBanners()
-    this.$store.dispatch('getNewCourier', { type: 0 }).then(res => {
-      this.musicList = res.data
+    this.$store.dispatch('getUserSongList', +new Date()).then(res => {
+      console.log(res, 'res')
     })
-    this.$store.dispatch('getPlayList').then(res => {
-      this.personalized = res.result
-    })
+    // this.$store.dispatch('getNewCourier', { type: 0 }).then(res => {
+    //   this.musicList = res.data
+    // })
+    // this.$store.dispatch('getPlayList').then(res => {
+    //   this.personalized = res.result
+    // })
   }
 }
 </script>

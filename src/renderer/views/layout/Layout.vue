@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 11:14:55
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-06 20:23:15
+ * @Last Modified time: 2019-03-09 17:16:30
  */
 <template>
   <div class="app-wrapper">
@@ -11,7 +11,9 @@
         <navhead />
       </el-header>
       <el-container>
-        <el-aside width="200px">Aside</el-aside>
+        <el-aside width="200px">
+          <sidebar></sidebar>
+        </el-aside>
         <el-main>
           <app-main />
         </el-main>
@@ -23,13 +25,15 @@
 <script>
 import navhead from './components/Head'
 import appMain from './components/Main'
+import sidebar from './components/Sidebar'
 
 require('@/utils/background.js')
 
 export default {
   components: {
     navhead,
-    appMain
+    appMain,
+    sidebar
   }
 }
 </script>

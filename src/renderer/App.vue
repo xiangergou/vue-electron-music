@@ -18,5 +18,6 @@
   -moz-osx-font-smoothing: grayscale;
   background: #F6F6F6;
   overflow: auto;
+  font-size: 13px;
 }
 </style>
