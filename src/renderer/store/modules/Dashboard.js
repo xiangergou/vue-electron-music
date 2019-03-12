@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-05 14:43:08
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-11 14:25:20
+ * @Last Modified time: 2019-03-12 15:28:51
  */
 
 import { homeApi } from '@/api/dashboard'
@@ -10,7 +10,10 @@ import { getSessionId } from '@/utils/auth'
 
 const state = {
   bannerImgList: JSON.parse(window.sessionStorage.getItem('banner')) || [],
-  newCourier: []
+  newCourier: JSON.parse(window.sessionStorage.getItem('newCourier')) || [],
+  userPlayList: JSON.parse(window.sessionStorage.getItem('userPlayList')) || [],
+  userResource: JSON.parse(window.sessionStorage.getItem('userResource')) || [],
+  personalized: JSON.parse(window.sessionStorage.getItem('personalized')) || []
 }
 
 const mutations = {
@@ -40,7 +43,7 @@ const actions = {
   getNewCourier ({ commit, state }, type) {
     return new Promise((resolve, reject) => {
       homeApi.getNewCourier(type).then(response => {
-        const data = response.data
+        const data = response.data.data
         window.sessionStorage.setItem('newCourier', JSON.stringify(data))
         resolve(data)
       }).catch(error => {
@@ -57,6 +60,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       homeApi.getPlayList().then(response => {
         const data = response.data
+        window.sessionStorage.setItem('personalized', JSON.stringify(data))
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -65,14 +69,13 @@ const actions = {
   },
 
   /**
-   *
-   * @param {*} { commit, state }
    * @returns 获取获取每日推荐歌单
    */
   getResource ({ commit, state }) {
     return new Promise((resolve, reject) => {
       homeApi.getResource().then(response => {
         const data = response.data
+        window.sessionStorage.setItem('userResource', JSON.stringify(data))
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -90,6 +93,7 @@ const actions = {
       homeApi.getUserPlaylist({
         uid: getSessionId()
       }).then(res => {
+        window.sessionStorage.setItem('userPlayList', JSON.stringify(res))
         resolve(res)
       }).catch(error => {
         reject(error)

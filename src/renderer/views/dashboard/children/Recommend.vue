@@ -44,11 +44,19 @@
     <article class="recommend__select">
       <h2>新歌速递</h2>
       <div class="select-list">
-        <el-row>
-          <el-col :span="12" v-for="(item, i) in musicList" :key="i" class="musicItem">
-            {{i+1}} &nbsp; {{item.name}}
-          </el-col>
-        </el-row>
+        <div class="new-courier__ul">
+          <h3>播放全部</h3>
+          <el-row>
+            <el-col :span="12" v-for="(item, i) in musicList" :key="i" class="musicItem"
+            :class="{active: ((i+1) % 4 ===0) || ((i + 1) % 4 ===3)}"
+            @click="playMusic(item)"
+            >
+              <span>{{i+1}} </span>
+              <span class="new-courier__text">{{item.name}}</span>
+              <span>{{item.artists[0].name}}</span>
+            </el-col>
+          </el-row>
+        </div>
       </div>
     </article>
 
@@ -61,29 +69,40 @@ export default {
   data () {
     return {
       banners: [],
-      musicList: [],
-      personalized: [],
+      musicList: [], // 新歌
+      personalized: [], // 热门精选
       resource: [] // 个人推荐
     }
   },
   methods: {
-    getBanners () {
-      this.$store.dispatch('getBanner').then(() => {
-        this.banners = this.$store.state.Dashboard.bannerImgList
-      })
+    async getBanners () {
+      this.banners = this.$store.state.Dashboard.bannerImgList.length > 1
+        ? this.$store.state.Dashboard.bannerImgList
+        : await this.$store.dispatch('getBanner')
+    },
+    async getNewCourier () {
+      this.musicList = this.$store.state.Dashboard.newCourier.length > 1
+        ? this.$store.state.Dashboard.newCourier.slice(0, 20)
+        : await this.$store.dispatch('getNewCourier', { type: 0 })
+    },
+    async getPlayList () {
+      this.personalized = this.$store.state.Dashboard.personalized.result.length > 1
+        ? this.$store.state.Dashboard.personalized.result
+        : await this.$store.dispatch('getPlayList')
+    },
+    async getResource () {
+      this.resource = this.$store.state.Dashboard.userResource.recommend.length > 1
+        ? this.$store.state.Dashboard.userResource.recommend
+        : await this.$store.dispatch('getResource')
+    },
+    playMusic (item) {
+    },
+    init () {
+      Promise.all([this.getBanners(), this.getNewCourier(), this.getPlayList(), this.getResource()])
     }
   },
   mounted () {
-    this.getBanners()
-    this.$store.dispatch('getNewCourier', { type: 0 }).then(res => {
-      this.musicList = res.data.slice(0, 20)
-    })
-    this.$store.dispatch('getPlayList').then(res => {
-      this.personalized = res.result.slice(0, 8)
-    })
-    this.$store.dispatch('getResource').then(res => {
-      this.resource = res.recommend.slice(0, 4)
-    })
+    this.init()
   }
 }
 </script>
@@ -123,6 +142,8 @@ export default {
       border-top: 1px solid #ccc;
       text-align: left;
       .hot-select__ul{
+        height: 430px;
+        overflow: hidden;
         margin-top: 20px;
         width: 100%;
         display: flex;
@@ -170,16 +191,51 @@ export default {
           }
         }
       }
+    
+    }
+    .new-courier__ul{
+      border: 1px solid #ccc;
+      margin-top: 20px;
+      margin-bottom: 30px;
+      h3{
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        background: #fafafa;
+        text-indent: 20px;
+      }
     }
     .musicItem{
-      height: 20px;
-      line-height: 20px;
+      height: 30px;
+      line-height: 30px;
       text-align: left;
       font-size: 13px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      padding: 0 10px;
+      box-sizing: border-box;
+      border-left: 1px solid rgb(243, 239, 239);
+      display: flex;
+      span{
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        cursor: pointer;
+      }
+      span:first-child{
+        width: 30px;
+        text-align: center;
+      }
+      span:nth-child(2){
+        flex: 1;
+      }
+      span:last-child{
+        width: 70px;
+        text-align: right;
+      }
     }
+  }
+  .active {
+    background: #fafafa;
   }
 }
  
