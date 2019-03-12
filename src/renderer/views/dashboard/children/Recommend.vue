@@ -11,9 +11,12 @@
     <article class="recommend__select">
       <h2>热门精选</h2>
       <div class="select-list">
-        <ul>
+        <ul class="hot-select__ul">
             <li v-for="(item, i) in personalized" :key="i">
-            {{item.name}}
+              <span>
+                <img :src="item.picUrl" alt="">
+              </span>
+              <p>{{item.name}}</p>
           </li>
         </ul>
       </div>
@@ -22,8 +25,18 @@
     <article class="recommend__select">
       <h2>个性化推荐</h2>
       <div class="select-list">
-        <ul>
-          <li v-for="(item, index) in resource" :key="index">{{item.name}}</li>
+        <ul class="recommended-select__ul">
+          <li v-for="(item, index) in resource" :key="index">
+              <div class="recommended-select__li">
+                <span>
+                  <img :src="item.picUrl" alt="">
+                </span>
+                <div class="recommended-select__text">
+                  <strong>{{item.name}}</strong>
+                  <span>{{item.copywriter}}</span>
+                </div>
+              </div>
+          </li>
         </ul>
       </div>
     </article>
@@ -36,11 +49,6 @@
             {{i+1}} &nbsp; {{item.name}}
           </el-col>
         </el-row>
-        <!-- <ol>
-          <li v-for="(item, i) in musicList" :key="i">
-            {{item.name}}
-          </li>
-        </ol> -->
       </div>
     </article>
 
@@ -67,24 +75,20 @@ export default {
   },
   mounted () {
     this.getBanners()
-    // this.$store.dispatch('getUserSongList').then(res => {
-    //   console.log(res, 'res')
-    // })
     this.$store.dispatch('getNewCourier', { type: 0 }).then(res => {
-      this.musicList = res.data
+      this.musicList = res.data.slice(0, 20)
     })
     this.$store.dispatch('getPlayList').then(res => {
-      this.personalized = res.result
+      this.personalized = res.result.slice(0, 8)
     })
     this.$store.dispatch('getResource').then(res => {
-      console.log(res)
-      this.resource = res.recommend
+      this.resource = res.recommend.slice(0, 4)
     })
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .recommend__wrapper{
   padding: 0 30px;
   box-sizing: border-box;
@@ -103,24 +107,68 @@ export default {
   }
   .recommend__select{
     width: 100%;
-    height: 330px;
     overflow: auto;
-    display: flex;
-    flex-wrap: wrap;
-    border: 1px solid #ccc;
+    text-align: left;
     box-sizing: border-box;
-    ol{
-      width: 100%;
-      padding: 0;
-      li{
-        display: inline-block;
-        width: 50%;
-        margin: 0;
-        padding: 0;
-        height: 30px;
-        line-height: 30px;
-        font-size: 12px;
-        box-sizing: border-box;
+    h2{
+      border-bottom: 3px solid #ccc;
+      display: inline-block;
+      height: 25px;
+      padding: 0 3px;
+      font-size: 17px;
+      font-weight: 600;
+    }
+    .select-list{
+      box-sizing: border-box;
+      border-top: 1px solid #ccc;
+      text-align: left;
+      .hot-select__ul{
+        margin-top: 20px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        li{
+          border-radius: 3px;
+          width: 150px;
+          margin-bottom: 20px;
+          overflow: hidden;
+          img{
+            width: 100%;
+          }
+          p{
+            margin-top: 5px;
+            line-height: 20px;
+            font-size: 14px;
+          }
+        }
+      }
+      .recommended-select__ul{
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        li{
+          width: 50%;
+          .recommended-select__li{
+            display: flex;
+            margin-bottom: 20px;
+            img{
+              width: 125px;
+              height: 125px;
+              border-radius: 5px;
+              overflow: hidden;
+            }
+            .recommended-select__text{
+              flex: 1;
+              box-sizing: border-box;
+              white-space:normal;
+              word-break:break-all;
+              word-wrap: break-word;
+              padding: 20px 30px;
+            }
+          }
+        }
       }
     }
     .musicItem{

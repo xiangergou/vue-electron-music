@@ -2,10 +2,11 @@
  * @Author: liuxia
  * @Date: 2019-03-05 14:43:08
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-10 22:54:41
+ * @Last Modified time: 2019-03-11 14:25:20
  */
 
 import { homeApi } from '@/api/dashboard'
+import { getSessionId } from '@/utils/auth'
 
 const state = {
   bannerImgList: JSON.parse(window.sessionStorage.getItem('banner')) || [],
@@ -25,9 +26,6 @@ const actions = {
       }).then(response => {
         const data = response.data
         window.sessionStorage.setItem('banner', JSON.stringify(data.banners))
-        // commit('SET_ROLES', data.isAdmin)
-        // commit('SET_NAME', data.name)
-        // commit('SET_AVATAR', data.picUrl || defaultAvatar)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -44,9 +42,6 @@ const actions = {
       homeApi.getNewCourier(type).then(response => {
         const data = response.data
         window.sessionStorage.setItem('newCourier', JSON.stringify(data))
-        // commit('SET_ROLES', data.isAdmin)
-        // commit('SET_NAME', data.name)
-        // commit('SET_AVATAR', data.picUrl || defaultAvatar)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -69,11 +64,33 @@ const actions = {
     })
   },
 
+  /**
+   *
+   * @param {*} { commit, state }
+   * @returns 获取获取每日推荐歌单
+   */
   getResource ({ commit, state }) {
     return new Promise((resolve, reject) => {
       homeApi.getResource().then(response => {
         const data = response.data
         resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  /**
+   *
+   * @param {*} { commit, state }
+   * @returns 获取用户歌单
+   */
+  getUserPlaylist ({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      homeApi.getUserPlaylist({
+        uid: getSessionId()
+      }).then(res => {
+        resolve(res)
       }).catch(error => {
         reject(error)
       })

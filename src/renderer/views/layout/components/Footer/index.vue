@@ -21,7 +21,11 @@
 <script>
 export default {
   name: 'appFooter',
-  value1: ''
+  data () {
+    return {
+      value1: []
+    }
+  }
 }
 </script>
 

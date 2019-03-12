@@ -2,12 +2,12 @@
  * @Author: liuxia
  * @Date: 2019-01-12 19:09:26
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-10 11:34:06
+ * @Last Modified time: 2019-03-11 14:16:41
  */
 
 import { loginApi } from '@/api/user'
 import { getSessionId, setSessionId, removeSessionId } from '@/utils/auth'
-// import defaultAvatar from '@/assets/defaultAvatar.png'
+import defaultAvatar from '@/assets/defaultAvatar.png'
 
 const user = {
   state: {
@@ -35,6 +35,7 @@ const user = {
           password: userInfo.password
         }).then(response => {
           const data = response.data
+          console.log(data, 'login')
           setSessionId(data.account.id)
           commit('SET_SESSIONID', data.account.id)
           resolve(data)
@@ -53,19 +54,8 @@ const user = {
           const data = response.data.data
           commit('SET_ROLES', data.isAdmin)
           commit('SET_NAME', data.name)
-          // commit('SET_AVATAR', data.picUrl || defaultAvatar)
+          commit('SET_AVATAR', data.picUrl || defaultAvatar)
           resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-
-    getUserSongList ({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        loginApi.getUserSongList({
-        }).then(res => {
-          resolve(res)
         }).catch(error => {
           reject(error)
         })

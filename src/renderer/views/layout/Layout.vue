@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 11:14:55
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-10 22:17:03
+ * @Last Modified time: 2019-03-11 12:22:14
  */
 <template>
   <div class="app-wrapper">
@@ -30,7 +30,7 @@ import appMain from './components/Main'
 import sidebar from './components/Sidebar'
 import appFooter from './components/Footer'
 
-require('@/utils/background.js')
+// require('@/utils/background.js')
 
 export default {
   components: {

@@ -22,7 +22,6 @@ export default new Router({
         name: '首页',
         path: 'dashboard',
         component: resolve => require(['@/views/dashboard/index'], resolve)
-        // component: require('@/views/dashboard/index')
       }]
     },
     {

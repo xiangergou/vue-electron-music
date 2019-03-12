@@ -1,7 +1,7 @@
 <template>
   <div class="sideList">
     <ul>
-      <li v-for="(item, i) in itemList" :key="i">
+      <li v-for="(item, i) in createdPlayList" :key="i">
         <h2>{{item.name}}</h2>
         <p
         v-show="item.children"
@@ -18,7 +18,7 @@ export default {
   name: 'sideBar',
   data () {
     return {
-      itemList: [{
+      createdPlayList: [{
         name: '推荐',
         url: '',
         children: [{
@@ -52,6 +52,21 @@ export default {
         }]
       }]
     }
+  },
+  mounted () {
+    this.$store.dispatch('getUserPlaylist').then(res => {
+      let newArr = [{
+        name: '创建的歌单',
+        children: []
+      }]
+      res.data.playlist.forEach(element => {
+        newArr[0].children.push({
+          name: element.name,
+          id: element.id
+        })
+      })
+      this.createdPlayList = this.createdPlayList.concat(newArr)
+    })
   }
 }
 </script>
@@ -72,6 +87,9 @@ export default {
         box-sizing: border-box;
         height: 30px;
         line-height: 30px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }

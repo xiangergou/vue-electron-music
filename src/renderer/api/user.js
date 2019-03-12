@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 21:23:49
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-10 10:51:48
+ * @Last Modified time: 2019-03-11 14:23:01
  */
 
 import fetch from '@/utils/fetch'
@@ -28,13 +28,6 @@ export const loginApi = {
       url: '/logout',
       method: 'post'
     })
-  },
-  /* 获取用户信息 , 歌单，收藏，mv, dj 数量 */
-  getUserSongList (params = {}) {
-    return fetch({
-      url: '/user/subcount',
-      method: 'post',
-      params
-    })
   }
+
 }
