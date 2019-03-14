@@ -49,7 +49,7 @@
           <el-row>
             <el-col :span="12" v-for="(item, i) in musicList" :key="i" class="musicItem"
             :class="{active: ((i+1) % 4 ===0) || ((i + 1) % 4 ===3)}"
-            @click="playMusic(item)"
+            @click.native="playMusic(item)"
             >
               <span>{{i+1}} </span>
               <span class="new-courier__text">{{item.name}}</span>
@@ -76,26 +76,30 @@ export default {
   },
   methods: {
     async getBanners () {
-      this.banners = this.$store.state.Dashboard.bannerImgList.length > 1
-        ? this.$store.state.Dashboard.bannerImgList
+      this.banners = this.$store.state.dashboard.bannerImgList.length > 1
+        ? this.$store.state.dashboard.bannerImgList
         : await this.$store.dispatch('getBanner')
     },
-    async getNewCourier () {
-      this.musicList = this.$store.state.Dashboard.newCourier.length > 1
-        ? this.$store.state.Dashboard.newCourier.slice(0, 20)
-        : await this.$store.dispatch('getNewCourier', { type: 0 })
-    },
     async getPlayList () {
-      this.personalized = this.$store.state.Dashboard.personalized.result.length > 1
-        ? this.$store.state.Dashboard.personalized.result
+      this.personalized = (this.$store.state.dashboard.personalized.result &&
+        this.$store.state.dashboard.personalized.result.length > 1)
+        ? this.$store.state.dashboard.personalized.result
         : await this.$store.dispatch('getPlayList')
     },
     async getResource () {
-      this.resource = this.$store.state.Dashboard.userResource.recommend.length > 1
-        ? this.$store.state.Dashboard.userResource.recommend
+      this.resource = (this.$store.state.dashboard.userResource.recommend &&
+        this.$store.state.dashboard.userResource.recommend.length > 1)
+        ? this.$store.state.dashboard.userResource.recommend.slice(0, 4)
         : await this.$store.dispatch('getResource')
     },
+    async getNewCourier () {
+      this.musicList = (this.$store.state.dashboard.newCourier &&
+        this.$store.state.dashboard.newCourier.length > 1)
+        ? this.$store.state.dashboard.newCourier.slice(0, 20)
+        : await this.$store.dispatch('getNewCourier', { type: 0 })
+    },
     playMusic (item) {
+      this.$store.dispatch('setCrtSong', item)
     },
     init () {
       Promise.all([this.getBanners(), this.getNewCourier(), this.getPlayList(), this.getResource()])
