@@ -152,11 +152,15 @@ export default {
     div{
       flex: 1;
       padding-top: 15px;
+      padding-right: 30px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       h3{
         color: rgb(122, 111, 111);
+        overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       }
       strong{
         color: #000;

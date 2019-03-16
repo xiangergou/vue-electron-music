@@ -196,3 +196,9 @@ input[type='file']{
   width: 250px;
   height: 270px;
 }
+.el-message-box__wrapper{
+  z-index: 9999999 !important;
+}
+.v-modal{
+  z-index: 9999998 !important;
+}

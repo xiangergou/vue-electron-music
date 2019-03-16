@@ -49,7 +49,7 @@
           <el-row>
             <el-col :span="12" v-for="(item, i) in musicList" :key="i" class="musicItem"
             :class="{active: ((i+1) % 4 ===0) || ((i + 1) % 4 ===3)}"
-            @click.native="playMusic(item)"
+            @click.native="playMusic(item, i)"
             >
               <span>{{i+1}} </span>
               <span class="new-courier__text">{{item.name}}</span>
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'recommend',
   data () {
@@ -98,9 +99,14 @@ export default {
         ? this.$store.state.dashboard.newCourier.slice(0, 20)
         : await this.$store.dispatch('getNewCourier', { type: 0 })
     },
-    playMusic (item) {
-      console.log(item, 'item')
-      this.$store.dispatch('setCrtSong', item)
+    playMusic (item, i) {
+      this.$msgbox({
+        message: '居中的文字',
+        center: true
+      })
+      console.log(item)
+      // console.log(this.musicList, i, 'item')
+      // this.$store.dispatch('setCrtSong', item)
     },
     init () {
       Promise.all([this.getBanners(), this.getNewCourier(), this.getPlayList(), this.getResource()])

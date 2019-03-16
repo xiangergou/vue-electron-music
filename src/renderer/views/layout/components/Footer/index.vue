@@ -1,9 +1,9 @@
 <template>
   <div class="footer-wrapper">
     <div class="footer-play__btn">
-      <span>left</span>
-      <span @click="playMusic">play</span>
-      <span>right</span>
+      <span>pre</span>
+      <span @click="playMusic">{{playState ? 'off' : 'on'}}</span>
+      <span>next</span>
     </div>
     <div class="footer-play__progress">
       <audio ref="audio" autoplay  @timeupdate="updateTime"></audio>
@@ -11,12 +11,12 @@
       <span class="time time-r">{{format(currentTime)}}/{{format(duration)}}</span>
     </div>
     <div class="footer-play__list">
-        <span style="text-align:center">vioce</span>
+      <span style="text-align:center">vioce</span>
       <strong>
         <el-slider v-model="volume" class="el-sider" @change="volumeChange" :max="100">
           </el-slider>
       </strong>
-      <span>模式</span>
+      <span @click="changeMode">{{mode}}</span>
       <span>词</span>
       <span>列表</span>
     </div>
@@ -26,10 +26,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+// import { playMode } from '@/config'
 export default {
   name: 'appFooter',
   data () {
     return {
+      playState: false,
       volume: 0,
       duration: 0,
       currentTime: 0,
@@ -40,19 +42,28 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currentSong: 'currentSong'
+      currentSong: 'currentSong',
+      mode: 'mode'
     })
   },
   methods: {
     getSongInfo (id) {
       this.$store.dispatch('getSongUrl', { id }).then(res => {
         this.url = res.data[0].url
+        if (!this.url) {
+          this.$message({
+            message: '居中的文字',
+            center: true
+          })
+          return
+        }
         this.$refs.audio.currentTime = 0
         this.$refs.audio.src = this.url
         this.$refs.audio.play()
       })
     },
     playMusic () {
+      this.playState = !this.playState
       this.$refs.audio.paused ? this.$refs.audio.play() : this.$refs.audio.pause()
     },
     updateTime (e) {
@@ -74,6 +85,11 @@ export default {
     },
     volumeChange (percent) {
       this.$refs.audio.volume = (percent / 100)
+    },
+    changeMode () {
+      const mode = (this.mode + 1) % 3
+      this.$store.commit('SET_MODE', mode)
+      console.log(this.mode)
     }
   },
   mounted () {
