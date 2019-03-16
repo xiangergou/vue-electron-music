@@ -11,7 +11,11 @@
       <span class="time time-r">{{format(currentTime)}}/{{format(duration)}}</span>
     </div>
     <div class="footer-play__list">
-      <strong>音量</strong>
+        <span style="text-align:center">vioce</span>
+      <strong>
+        <el-slider v-model="volume" class="el-sider" @change="volumeChange" :max="100">
+          </el-slider>
+      </strong>
       <span>模式</span>
       <span>词</span>
       <span>列表</span>
@@ -26,6 +30,7 @@ export default {
   name: 'appFooter',
   data () {
     return {
+      volume: 0,
       duration: 0,
       currentTime: 0,
       percent: 0,
@@ -41,7 +46,6 @@ export default {
   methods: {
     getSongInfo (id) {
       this.$store.dispatch('getSongUrl', { id }).then(res => {
-        console.log(res)
         this.url = res.data[0].url
         this.$refs.audio.currentTime = 0
         this.$refs.audio.src = this.url
@@ -61,13 +65,16 @@ export default {
       interval = interval | 0
       let minute = interval / 60 | 0
       let second = interval % 60
-      if (second < 10) {
-        second = '0' + second
-      }
+      second = second < 10 ? second : '0' + second
+      minute = minute < 10 ? minute : '0' + minute
       return minute + ':' + second
     },
     progressChange (percent) {
       console.log(percent)
+    },
+    volumeChange (percent) {
+      console.log(percent / 100)
+      this.$refs.audio.volume = (percent / 100)
     }
   },
   mounted () {
@@ -94,7 +101,6 @@ export default {
     },
     currentTime () {
       this.percent = (this.currentTime / this.duration).toFixed(3) * 100
-      console.log(this.percent)
     }
   }
 }
@@ -116,28 +122,35 @@ export default {
   .footer-play__progress{
     flex: 1;
     height: 60px;
+    padding-left: 25px;
+    box-sizing: border-box;
     .el-sider{
       margin-top: 10px;
       float: left;
-      width: 90%;
+      width: 80%;
     }
     span{
-      width: 70px;
-      float: right;
+      width: 80px;
+      float: left;
       text-align: center;
     }
   }
   .footer-play__list{
-    width: 250px;
+    width: 280px;
     display: flex;
-    padding: 0 20px;
     box-sizing: border-box;
     span{
       display: inline-block;
-      width: 50px;
+      width: 45px;
     }
     strong{
       flex-grow: 1;
+      flex: 1;
+      .el-sider{
+        margin-top: 10px;
+        float: left;
+        width: 85%;
+      }
     }
   }
 }
