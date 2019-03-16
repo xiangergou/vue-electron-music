@@ -70,18 +70,13 @@ export default {
       return minute + ':' + second
     },
     progressChange (percent) {
-      console.log(percent)
+      this.$refs.audio.currentTime = (percent / 100 * this.duration)
     },
     volumeChange (percent) {
-      console.log(percent / 100)
       this.$refs.audio.volume = (percent / 100)
     }
   },
   mounted () {
-    // setInterval(() => {
-    //   this.value1 += 1
-    // }, 100)
-    // console.log(this.currentSong)
   },
   watch: {
     currentSong (newVal, oldVal) {
@@ -106,7 +101,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .footer-wrapper{
   border-top: 1px solid #ccc;
   display: flex;
@@ -152,6 +147,13 @@ export default {
         width: 85%;
       }
     }
+  }
+  .el-slider__button{
+    width: 13px;
+    height: 13px;
+  }
+  .el-slider__runway{
+    height: 5px;
   }
 }
 </style>

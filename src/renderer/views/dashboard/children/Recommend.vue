@@ -99,6 +99,7 @@ export default {
         : await this.$store.dispatch('getNewCourier', { type: 0 })
     },
     playMusic (item) {
+      console.log(item, 'item')
       this.$store.dispatch('setCrtSong', item)
     },
     init () {

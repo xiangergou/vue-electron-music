@@ -10,10 +10,22 @@
         >{{song.name}}</p>
       </li>
     </ul>
+
+    <footer>
+      <p>
+        <img :src="curImg" alt="">
+      </p>
+      <div>
+        <h3><strong>{{songName}}</strong>{{alias}}</h3>
+        <span>{{singer}}</span>
+      </div>
+    </footer>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'sideBar',
   data () {
@@ -50,8 +62,17 @@ export default {
           name: '我的mv',
           url: ''
         }]
-      }]
+      }],
+      curImg: '',
+      songName: '',
+      singer: '',
+      alias: ''
     }
+  },
+  computed: {
+    ...mapGetters({
+      currentSong: 'currentSong'
+    })
   },
   mounted () {
     this.$store.dispatch('getUserPlaylist').then(res => {
@@ -67,6 +88,17 @@ export default {
       })
       this.createdPlayList = this.createdPlayList.concat(newArr)
     })
+  },
+  watch: {
+    currentSong (newVal, oldVal) {
+      if ((!newVal.id) || (newVal.id === oldVal.id)) {
+        return
+      }
+      this.alias = newVal.album.alias[0]
+      this.curImg = newVal.album.blurPicUrl
+      this.songName = newVal.name
+      this.singer = newVal.artists[0].name
+    }
   }
 }
 </script>
@@ -74,6 +106,8 @@ export default {
 <style scoped lang="scss">
 .sideList{
   ul{
+    padding-bottom: 80px;
+    box-sizing: border-box;
     width: 100%;
     li{
       h2{
@@ -90,6 +124,49 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+      }
+    }
+  }
+  footer{
+    position: fixed;
+    bottom: 60px;
+    left: 0;
+    height: 80px;
+    width: 200px;
+    border-top: 1px solid #fafafa;
+    background: #d3dce6;
+    display: flex;
+    line-height: initial;
+    p{
+      width: 75px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img{
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+      }
+    }
+    div{
+      flex: 1;
+      padding-top: 15px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      h3{
+        color: rgb(122, 111, 111);
+      }
+      strong{
+        color: #000;
+        font-size: 14px;
+      }
+      span{
+        display: inline-block;
+        margin-top: 5px;
+        font-size: 13px;
+        color: #333;
       }
     }
   }
