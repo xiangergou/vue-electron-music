@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 15:26:51
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-10 22:46:08
+ * @Last Modified time: 2019-03-17 22:26:31
  */
 
 <template>
@@ -17,59 +17,91 @@
       <div class="flex-right">
         <span>私信</span>
         <span>设置</span>
-        <span>
           <el-dropdown
             class="avatar-container right-menu-item"
             trigger="click">
             <div class="avatar-wrapper">
-              <!-- <img :src="avatar"  class="user-avatar"> -->
-              <span class="user-name">{{ name }}</span>
+              <img :src="userInfo.profile.avatarUrl"  class="user-avatar">
               <i class="el-icon-arrow-down"/>
             </div>
             <el-dropdown-menu
               slot="dropdown"
               class="user-dropdown">
               <el-dropdown-item>
-                <span
-                  style="display:block;"
-                  @click="layer_showUserInfo = true">个人信息</span>
+                <div
+                  class="avater"
+                  @click="layer_showUserInfo = true">
+                  <span class="user-avatar"><img :src="userInfo.profile.avatarUrl"></span>
+                 <span class="user-name">{{ userInfo.profile.nickname }}</span>
+                </div>
+
+                <div class="userActiv">
+                  <ul>
+                    <li v-for="(item, i) in userActiv" :key="i">
+                      <strong>{{ item.value }}</strong>
+                      <p>{{ item.label }}</p>
+                    </li>
+                  </ul>
+                </div>
               </el-dropdown-item>
+              
               <router-link
                 class="inlineBlock"
                 to="/">
                 <el-dropdown-item>
-                  首页
+                  <span>个人信息设置</span>
                 </el-dropdown-item>
               </router-link>
+
               <el-dropdown-item divided>
                 <span
                   style="display:block;"
-                  @click="logout">退出</span>
+                  @click="logout">退出登录</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-        </span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
       input: '',
-      layer_showUserInfo: true,
-      name: 'yun'
+      layer_showUserInfo: true
+    }
+  },
+  computed: {
+    ...mapGetters({
+      userInfo: 'userInfo'
+    }),
+    userActiv () {
+      let arr = [{
+        label: '动态',
+        value: this.userInfo.profile.eventCount
+      }, {
+        label: '关注',
+        value: this.userInfo.profile.follows
+      }, {
+        label: '粉丝',
+        value: this.userInfo.profile.followeds
+      }]
+      return arr
     }
   },
   methods: {
     logout () {
       this.$store.dispatch('LogOut').then(() => {
-        // this.$router.push({ path: '/login' })
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
     }
+  },
+  mounted () {
+    console.log(this.userInfo)
   }
 }
 </script>
@@ -102,14 +134,61 @@ export default {
      float: right;
      width: 140px;
      display: flex;
+     padding-right: 10px;
      span{
        flex: 1;
        cursor: pointer;
      }
    }
   }
+  .avatar-wrapper{
+    img{
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      border-radius: 25px;
+      vertical-align: middle;
+    }
+  }
   .user-dropdown{
     width: 300px;
   }
 }
+.avater{
+  display: flex;
+  .user-avatar{
+    width: 40px;
+  }
+  .user-name {
+    flex: 1;
+  }
+  span{
+    img{
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border-radius: 30px;
+      vertical-align: middle;
+    }
+  }
+}
+.userActiv{
+  ul{
+    display: flex;
+    li{
+      display: block;
+      flex: 1;
+      overflow: auto;
+      p{
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+    }
+    
+  }
+  ul :hover{
+    color: pink
+  }
+}
+
 </style>

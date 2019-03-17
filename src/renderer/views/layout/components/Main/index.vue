@@ -18,9 +18,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .app-main {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   /* position: relative;
   overflow: hidden; */
+  
 }
 </style>

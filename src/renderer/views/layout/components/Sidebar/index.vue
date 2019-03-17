@@ -11,7 +11,7 @@
       </li>
     </ul>
 
-    <footer>
+    <footer v-show="currentSong.id">
       <p>
         <img :src="curImg" alt="">
       </p>

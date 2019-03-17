@@ -1,6 +1,6 @@
 # electron-quick-start
 
-> An electron-vue project
+> 基于electron尝试搭建网易云音乐
 
 #### Build Setup
 

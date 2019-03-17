@@ -1,12 +1,12 @@
 <template>
   <div class="footer-wrapper">
     <div class="footer-play__btn">
-      <span>pre</span>
+      <span @click="pre">pre</span>
       <span @click="playMusic">{{playState ? 'off' : 'on'}}</span>
-      <span>next</span>
+      <span @click="next">next</span>
     </div>
     <div class="footer-play__progress">
-      <audio ref="audio" autoplay  @timeupdate="updateTime"></audio>
+      <audio ref="audio" autoplay  @timeupdate="updateTime" @ended="end"></audio>
       <el-slider v-model="percent" class="el-sider" @change="progressChange" :max="100"></el-slider>
       <span class="time time-r">{{format(currentTime)}}/{{format(duration)}}</span>
     </div>
@@ -18,7 +18,12 @@
       </strong>
       <span @click="changeMode">{{mode}}</span>
       <span>词</span>
-      <span>列表</span>
+      <span @click="handleList">列表</span>
+    </div>
+
+    <!-- song list -->
+    <div class="playList" v-show="isShowList">
+
     </div>
 
   </div>
@@ -26,7 +31,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import { playMode } from '@/config'
+import { playMode } from '@/config'
 export default {
   name: 'appFooter',
   data () {
@@ -37,13 +42,16 @@ export default {
       currentTime: 0,
       percent: 0,
       isPlay: false,
-      move: false
+      move: false,
+      isShowList: false
     }
   },
   computed: {
     ...mapGetters({
       currentSong: 'currentSong',
-      mode: 'mode'
+      mode: 'mode',
+      currentIndex: 'currentIndex',
+      palyList: 'palyList'
     })
   },
   methods: {
@@ -51,8 +59,8 @@ export default {
       this.$store.dispatch('getSongUrl', { id }).then(res => {
         this.url = res.data[0].url
         if (!this.url) {
-          this.$message({
-            message: '居中的文字',
+          this.$msgbox({
+            message: '无版权',
             center: true
           })
           return
@@ -61,6 +69,9 @@ export default {
         this.$refs.audio.src = this.url
         this.$refs.audio.play()
       })
+    },
+    handleList () {
+      this.isShowList = !this.isShowList
     },
     playMusic () {
       this.playState = !this.playState
@@ -76,8 +87,9 @@ export default {
       interval = interval | 0
       let minute = interval / 60 | 0
       let second = interval % 60
-      second = second < 10 ? second : '0' + second
-      minute = minute < 10 ? minute : '0' + minute
+      if (second < 10) {
+        second = '0' + second
+      }
       return minute + ':' + second
     },
     progressChange (percent) {
@@ -89,7 +101,36 @@ export default {
     changeMode () {
       const mode = (this.mode + 1) % 3
       this.$store.commit('SET_MODE', mode)
-      console.log(this.mode)
+    },
+    loop () {
+      this.$refs.audio.loop = 'loop'
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
+    },
+    pre () {
+      this.$store.commit('SET_CURRENT_INDEX', this.currentIndex - 1)
+    },
+    next () {
+      this.$refs.audio.loop = false
+      switch (this.mode) {
+        case playMode.loop:
+          this.$store.commit('SET_CURRENT_INDEX', this.currentIndex + 1)
+          this.loop()
+          break
+        case playMode.sequence:
+          this.$store.commit('SET_CURRENT_INDEX', this.currentIndex + 1)
+          break
+        case playMode.random:
+          this.$store.commit('SET_CURRENT_INDEX', Math.floor(Math.random() * this.palyList.length) + 1)
+          break
+      }
+    },
+    end () {
+      if (this.mode === playMode.loop) {
+        this.loop()
+      } else {
+        this.next()
+      }
     }
   },
   mounted () {
@@ -100,7 +141,6 @@ export default {
         return
       }
       this.$refs.audio.pause()
-      this.$refs.audio.currentTime = 0
       this.getSongInfo(newVal.id)
 
       let stop = setInterval(() => {
@@ -170,6 +210,18 @@ export default {
   }
   .el-slider__runway{
     height: 5px;
+  }
+  .playList{
+    position: fixed;
+    bottom: 60px;
+    right: 0;
+    z-index: 9999;;
+    width: 580px;
+    height: 450px;
+    background: #fafafa;
+    border: 1px solid #fafafa;
+    border-radius: 3px;
+    box-shadow: #fafafa
   }
 }
 </style>

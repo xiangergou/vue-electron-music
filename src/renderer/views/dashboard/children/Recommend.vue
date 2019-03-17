@@ -100,13 +100,11 @@ export default {
         : await this.$store.dispatch('getNewCourier', { type: 0 })
     },
     playMusic (item, i) {
-      this.$msgbox({
-        message: '居中的文字',
-        center: true
-      })
-      console.log(item)
-      // console.log(this.musicList, i, 'item')
-      // this.$store.dispatch('setCrtSong', item)
+      let songData = {
+        index: i,
+        list: this.musicList
+      }
+      this.$store.commit('SET_CRT_SONG_LIST', songData)
     },
     init () {
       Promise.all([this.getBanners(), this.getNewCourier(), this.getPlayList(), this.getResource()])

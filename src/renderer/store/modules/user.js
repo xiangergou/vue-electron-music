@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-01-12 19:09:26
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-11 14:16:41
+ * @Last Modified time: 2019-03-17 18:57:51
  */
 
 import { loginApi } from '@/api/user'
@@ -13,7 +13,11 @@ const user = {
   state: {
     sessionId: getSessionId(),
     name: '',
-    avatar: ''
+    avatar: '',
+    userInfo: JSON.parse(window.sessionStorage.getItem('userInfo')) || {}
+  },
+  getters: {
+    userInfo: state => state.userInfo
   },
   mutations: {
     SET_SESSIONID: (state, sessionId) => {
@@ -25,6 +29,9 @@ const user = {
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
     }
+    // SET_USERINFO: (state, data) => {
+    //   state.userInfo = data
+    // }
   },
   actions: {
     Login ({ commit }, userInfo) {
@@ -35,8 +42,9 @@ const user = {
           password: userInfo.password
         }).then(response => {
           const data = response.data
-          console.log(data, 'login')
           setSessionId(data.account.id)
+          // commit('SET_USERINFO', data)
+          window.sessionStorage.setItem('userInfo', JSON.stringify(data))
           commit('SET_SESSIONID', data.account.id)
           resolve(data)
         }).catch(error => {
@@ -55,6 +63,7 @@ const user = {
           commit('SET_ROLES', data.isAdmin)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.picUrl || defaultAvatar)
+          commit('SET_USERINFO', data)
           resolve(response)
         }).catch(error => {
           reject(error)
