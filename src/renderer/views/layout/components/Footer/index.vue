@@ -133,6 +133,15 @@ export default {
       }
     }
   },
+  created () {
+    document.onkeydown = e => {
+      e && e.preventDefault()
+      let _key = window.event.keyCode
+      if (_key === 32) {
+        this.playMusic()
+      }
+    }
+  },
   mounted () {
   },
   watch: {

@@ -1,7 +1,7 @@
 <template>
   <div class="sideList">
     <ul>
-      <li v-for="(item, i) in createdPlayList" :key="i">
+      <li v-for="(item, i) in createdPlayList" :key="i" @click="handleToPath(item)">
         <h2>{{item.name}}</h2>
         <p
         v-show="item.children"
@@ -11,7 +11,7 @@
       </li>
     </ul>
 
-    <footer v-show="currentSong.id">
+    <footer v-show="currentSong.id" @click="handleToDetail">
       <p>
         <img :src="curImg" alt="">
       </p>
@@ -32,10 +32,10 @@ export default {
     return {
       createdPlayList: [{
         name: '推荐',
-        url: '',
+        url: 'dashboard',
         children: [{
           name: '发现音乐',
-          url: ''
+          url: 'dashboard'
         }, {
           name: '私人FM',
           url: ''
@@ -73,6 +73,16 @@ export default {
     ...mapGetters({
       currentSong: 'currentSong'
     })
+  },
+  methods: {
+    handleToDetail () {
+      console.log(1)
+      this.$router.push('songDetail')
+    },
+    handleToPath (item) {
+      console.log(item)
+      this.$router.push(item.url)
+    }
   },
   mounted () {
     this.$store.dispatch('getUserPlaylist').then(res => {

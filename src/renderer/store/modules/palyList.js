@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-13 20:54:56
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-17 11:58:54
+ * @Last Modified time: 2019-03-20 09:11:36
  */
 import { playListApi } from '@/api/playList'
 
@@ -51,6 +51,17 @@ const playList = {
         playListApi.getSongUrl(id).then(response => {
           const data = response.data
           commit('CURRENTSONG_INFO', data)
+          resolve(data)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    querySong ({ commit }, param) {
+      return new Promise((resolve, reject) => {
+        playListApi.querySong(param).then(response => {
+          const data = response.data
           resolve(data)
         }).catch(error => {
           reject(error)

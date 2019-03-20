@@ -22,6 +22,10 @@ export default new Router({
         name: '首页',
         path: 'dashboard',
         component: resolve => require(['@/views/dashboard/index'], resolve)
+      }, {
+        name: '音乐详情页',
+        path: 'songDetail',
+        component: resolve => require(['@/views/songDetail/index'], resolve)
       }]
     },
     {

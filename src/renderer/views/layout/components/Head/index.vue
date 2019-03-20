@@ -2,7 +2,7 @@
  * @Author: liuxia
  * @Date: 2019-03-04 15:26:51
  * @Last Modified by: liuxia
- * @Last Modified time: 2019-03-17 22:26:31
+ * @Last Modified time: 2019-03-19 21:08:50
  */
 
 <template>
@@ -12,7 +12,7 @@
     </div>
     <div class="search-box">
       <div class="flex-left">
-        <el-input v-model="input" placeholder="请输入音乐，歌手，歌词，用户"></el-input>
+        <el-input v-model="searchData" placeholder="请输入音乐，歌手，歌词，用户"  @keyup.enter.native="handleSearch"></el-input>
       </div>
       <div class="flex-right">
         <span>私信</span>
@@ -71,7 +71,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      input: '',
+      searchData: '',
       layer_showUserInfo: true
     }
   },
@@ -94,6 +94,11 @@ export default {
     }
   },
   methods: {
+    handleSearch () {
+      this.$store.dispatch('querySong', { keywords: this.searchData }).then(res => {
+        console.log(res)
+      })
+    },
     logout () {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
